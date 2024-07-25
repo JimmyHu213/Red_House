@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+import 'package:red_house/locator.dart';
+import 'package:red_house/router/route_names.dart';
+import 'package:red_house/router/router.dart';
+import 'package:red_house/services/navigation_service.dart';
+import 'package:red_house/widgets/centered_view/centered_view.dart';
+import 'package:red_house/widgets/navigation_drawer/nav_drawer.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:red_house/widgets/navigation_bar/navigation_bar.dart' as navbar;
+
+class LayoutTemplate extends StatelessWidget {
+  const LayoutTemplate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (context, sizingInformation) => Scaffold(
+        drawer: sizingInformation.deviceScreenType == DeviceScreenType.mobile
+            ? const NavDrawer()
+            : null,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: CenteredView(
+            child: Column(
+              children: <Widget>[
+                const navbar.NavigationBar(),
+                Expanded(
+                  child: Navigator(
+                    key: locator<NavigationService>().navigatorKey,
+                    onGenerateRoute: generateRoute,
+                    initialRoute: HomeRoute,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
