@@ -16,34 +16,35 @@ class IntroDetails extends StatelessWidget {
           sizingInformation.deviceScreenType == DeviceScreenType.mobile
               ? 50
               : 80;
-      double descriptionSize =
-          sizingInformation.deviceScreenType == DeviceScreenType.mobile
-              ? 16
-              : 21;
       return SizedBox(
           width: 600,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text('RedHouse Babes',
-                  style: TextStyle(
+              Stack(children: <Widget>[
+                Text('RedHouse Babes',
+                    style: TextStyle(
+                      //color: primaryColor,
                       fontWeight: FontWeight.w800,
                       height: 0.9,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 4
+                        ..color = Colors.white,
                       fontSize: titleSize,
-                      color: primaryColor),
-                  textAlign: textAlignment),
-              const SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Best of Mildura/Shipparton/Melbourne Brothel \nCome and enjoy the best service in town.',
-                style: TextStyle(
-                    fontSize: descriptionSize,
-                    height: 1.7,
-                    color: Colors.white),
-                textAlign: textAlignment,
-              ),
+                    ),
+                    textAlign: textAlignment),
+                Text('RedHouse Babes',
+                    style: TextStyle(
+                      //color: primaryColor,
+                      fontWeight: FontWeight.w800,
+                      height: 0.9,
+                      color: primaryColor,
+                      fontSize: titleSize,
+                    ),
+                    textAlign: textAlignment),
+              ]),
             ],
           ));
     });

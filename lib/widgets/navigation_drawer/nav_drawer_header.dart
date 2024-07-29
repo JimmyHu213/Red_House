@@ -13,10 +13,8 @@ class NavDrawerHeader extends StatelessWidget {
         child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('Skill Up Now',
+            Text('Enjoy your stay!',
                 style: TextStyle(fontSize: 18, color: Colors.white)),
-            Text('Tap Here',
-                style: TextStyle(fontSize: 18, color: Colors.white))
           ],
         ));
   }

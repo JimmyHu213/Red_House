@@ -19,10 +19,13 @@ class DrawerItem extends StatelessWidget {
           children: <Widget>[
             Icon(icon),
             const SizedBox(width: 30),
-            NavBarItem(
+            Text(
               title,
-              navigationPath: navigationPath,
-              isActive: false,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ));

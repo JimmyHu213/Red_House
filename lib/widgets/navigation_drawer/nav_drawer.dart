@@ -17,9 +17,9 @@ class NavDrawer extends StatelessWidget {
           children: <Widget>[
             NavDrawerHeader(),
             DrawerItem(
-                title: 'Home', icon: Icons.videocam, navigationPath: HomeRoute),
+                title: 'Home', icon: Icons.house, navigationPath: HomeRoute),
             DrawerItem(
-                title: 'About', icon: Icons.help, navigationPath: AboutRoute),
+                title: 'About', icon: Icons.info, navigationPath: AboutRoute),
           ],
         ));
   }
