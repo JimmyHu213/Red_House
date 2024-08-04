@@ -47,7 +47,7 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
           child: CenteredView(
             child: Column(
               children: <Widget>[
-                const navbar.NavigationBar(),
+                navbar.NavigationBar(onTap: scrollToTop),
                 sizingInformation.deviceScreenType == DeviceScreenType.mobile
                     ? Expanded(
                         child: SingleChildScrollView(
@@ -57,10 +57,10 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
                               HomeViewPage(
                                 key: _sectionKeys[0],
                               ),
+                              ServiceView(key: _sectionKeys[1]),
                               SpecialView(
-                                key: _sectionKeys[1],
+                                key: _sectionKeys[2],
                               ),
-                              ServiceView(key: _sectionKeys[2]),
                               LocationView(
                                 key: _sectionKeys[3],
                               ),
@@ -97,5 +97,13 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
         );
       }
     }
+  }
+
+  void scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 }

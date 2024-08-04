@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:red_house/constants/app_colors.dart';
 import 'package:red_house/constants/mobile_number.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:universal_html/html.dart' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class CallToActionMobile extends StatelessWidget {
   const CallToActionMobile(this.title, {super.key});
   final String title;
 
-  Future<void> _makePhoneCall() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: MOBILE_NUMBER);
-    if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri);
-    } else {
-      // Handle error, e.g., show a snackbar or dialog
-      print('Could not launch $phoneUri');
+  void _makePhoneCall() {
+    if (kIsWeb) {
+      html.window.open('tel:$MOBILE_NUMBER', '_blank');
     }
   }
 

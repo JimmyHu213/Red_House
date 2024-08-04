@@ -2,71 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:red_house/constants/app_colors.dart';
 import 'package:red_house/constants/mobile_number.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:universal_html/html.dart' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AboutContentMobile extends StatelessWidget {
   const AboutContentMobile({super.key});
 
-  Future<void> _makePhoneCall(BuildContext context) async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: MOBILE_NUMBER);
-    if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri);
+  void _makePhoneCall(BuildContext context) {
+    if (kIsWeb) {
+      html.window.open('tel:$MOBILE_NUMBER', '_blank');
     } else {
-      _showErrorDialog(context, 'Could not launch phone call.');
+      _launchUrl('tel:$MOBILE_NUMBER', context);
     }
   }
 
-  Future<void> _sendTextMessage(BuildContext context) async {
-    final Uri smsUri = Uri(scheme: 'sms', path: MOBILE_NUMBER);
-    if (await canLaunchUrl(smsUri)) {
-      await launchUrl(smsUri);
+  void _sendTextMessage(BuildContext context) {
+    if (kIsWeb) {
+      html.window.open('sms:$MOBILE_NUMBER', '_blank');
     } else {
-      _showErrorDialog(context, 'Could not launch messaging app.');
+      _launchUrl('sms:$MOBILE_NUMBER', context);
     }
   }
 
-  Future<void> _launchMap(String address) async {
+  void _launchMap(String address, BuildContext context) {
     final encodedAddress = Uri.encodeComponent(address);
-    final Uri mapUrl = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=$encodedAddress');
+    final mapUrl =
+        'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
 
-    if (await canLaunchUrl(mapUrl)) {
-      await launchUrl(mapUrl);
+    if (kIsWeb) {
+      html.window.open(mapUrl, '_blank');
     } else {
-      print('Could not launch $mapUrl');
-      // You might want to show an error dialog here
+      _launchUrl(mapUrl, context);
     }
   }
 
-  Widget _buildAddressText(String address, String phone) {
+  Future<void> _launchUrl(String urlString, BuildContext context) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch $urlString')),
+      );
+    }
+  }
+
+  Widget _buildAddressText(String address, String phone, BuildContext context) {
     return GestureDetector(
-      onTap: () => _launchMap(address),
+      onTap: () => _launchMap(address, context),
       child: Text(
         '$address\nPhone: $phone',
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           decoration: TextDecoration.underline,
         ),
       ),
-    );
-  }
-
-  void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -122,9 +110,10 @@ class AboutContentMobile extends StatelessWidget {
                     ),
                   ),
                   _buildAddressText(
-                      '11 Packham St, Shepparton VIC', '0459635846'),
+                      '11 Packham St, Shepparton VIC', '0459635846', context),
                   SizedBox(height: 10), // Add some space between addresses
-                  _buildAddressText('83A Bridge Rd, Buronga NSW', '0499312283'),
+                  _buildAddressText(
+                      '83A Bridge Rd, Buronga NSW', '0499312283', context),
                 ],
               )
             ],

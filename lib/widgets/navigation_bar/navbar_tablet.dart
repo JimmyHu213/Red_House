@@ -5,21 +5,22 @@ import 'package:red_house/widgets/navigation_bar/navbar_item.dart';
 import 'package:red_house/widgets/navigation_bar/navbar_logo.dart';
 
 class NavBarTabletDesktop extends StatelessWidget {
-  const NavBarTabletDesktop({super.key});
+  const NavBarTabletDesktop({super.key, required this.onLogoTap});
+  final VoidCallback onLogoTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: primaryColor,
-      child: const SizedBox(
+      child: SizedBox(
         height: 100,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              NavBarLogo(),
-              Row(
+              NavBarLogo(onTap: onLogoTap),
+              const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   NavBarItem(

@@ -27,7 +27,7 @@ class NavDrawerHeader extends StatelessWidget {
               endIndent: 50,
             ),
             AnimatedTextWithArrow(
-              text: 'Hit to See More !',
+              text: 'Hit to See More Pics!',
               textStyle: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,

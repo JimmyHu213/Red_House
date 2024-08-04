@@ -23,14 +23,14 @@ class NavDrawer extends StatelessWidget {
               onTap: () => onItemTap(0),
             ),
             DrawerItem(
+                title: 'Babes',
+                icon: Icons.eighteen_up_rating,
+                onTap: () => onItemTap(1)),
+            DrawerItem(
               title: 'Specials',
               icon: Icons.star,
-              onTap: () => onItemTap(1),
+              onTap: () => onItemTap(2),
             ),
-            DrawerItem(
-                title: 'Services',
-                icon: Icons.eighteen_up_rating,
-                onTap: () => onItemTap(2)),
             DrawerItem(
                 title: 'Location',
                 icon: Icons.location_on,
