@@ -7,7 +7,7 @@ class CallToActionMobile extends StatelessWidget {
   final String title;
 
   Future<void> _makePhoneCall() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: '+61 459635846');
+    final Uri phoneUri = Uri(scheme: 'tel', path: '+61 499312283');
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
     } else {

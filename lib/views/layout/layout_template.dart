@@ -13,15 +13,34 @@ import 'package:red_house/widgets/navigation_drawer/nav_drawer.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:red_house/widgets/navigation_bar/navigation_bar.dart' as navbar;
 
-class LayoutTemplate extends StatelessWidget {
+class LayoutTemplate extends StatefulWidget {
   const LayoutTemplate({super.key});
+
+  @override
+  State<LayoutTemplate> createState() => _LayoutTemplateState();
+}
+
+class _LayoutTemplateState extends State<LayoutTemplate> {
+  final ScrollController _scrollController = ScrollController();
+  final List<GlobalKey> _sectionKeys = List.generate(5, (_) => GlobalKey());
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
       builder: (context, sizingInformation) => Scaffold(
         drawer: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-            ? const NavDrawer()
+            ? NavDrawer(
+                onItemTap: (indext) {
+                  scrollToSection(indext);
+                  Navigator.pop(context);
+                },
+              )
             : null,
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -30,10 +49,25 @@ class LayoutTemplate extends StatelessWidget {
               children: <Widget>[
                 const navbar.NavigationBar(),
                 sizingInformation.deviceScreenType == DeviceScreenType.mobile
-                    ? const Expanded(
+                    ? Expanded(
                         child: SingleChildScrollView(
+                          controller: _scrollController,
                           child: Column(
-                            children: [HomeViewPage(), AboutView()],
+                            children: [
+                              HomeViewPage(
+                                key: _sectionKeys[0],
+                              ),
+                              SpecialView(
+                                key: _sectionKeys[1],
+                              ),
+                              ServiceView(key: _sectionKeys[2]),
+                              LocationView(
+                                key: _sectionKeys[3],
+                              ),
+                              AboutView(
+                                key: _sectionKeys[4],
+                              )
+                            ],
                           ),
                         ),
                       )
@@ -50,5 +84,18 @@ class LayoutTemplate extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void scrollToSection(int index) {
+    if (index >= 0 && index < _sectionKeys.length) {
+      final context = _sectionKeys[index].currentContext;
+      if (context != null) {
+        Scrollable.ensureVisible(
+          context,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
   }
 }
