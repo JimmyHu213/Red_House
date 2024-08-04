@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:red_house/constants/app_colors.dart';
+import 'package:red_house/constants/mobile_number.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CallToActionMobile extends StatelessWidget {
@@ -7,7 +8,7 @@ class CallToActionMobile extends StatelessWidget {
   final String title;
 
   Future<void> _makePhoneCall() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: '+61 499312283');
+    final Uri phoneUri = Uri(scheme: 'tel', path: MOBILE_NUMBER);
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
     } else {

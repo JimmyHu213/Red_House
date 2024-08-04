@@ -6,8 +6,20 @@ class SpecialContentMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text('Special Content Mobile'),
+      height: 400,
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text('Special Content Mobile $index'),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

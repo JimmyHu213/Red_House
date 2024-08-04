@@ -5,9 +5,14 @@ class ServiceContentMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Service Content Mobile',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Container(
+      height: 500,
+      child: ListView.builder(
+        itemCount: services.length,
+        itemBuilder: (context, index) {
+          return ServiceCard(service: services[index]);
+        },
+      ),
     );
   }
 }

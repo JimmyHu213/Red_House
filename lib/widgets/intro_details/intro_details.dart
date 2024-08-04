@@ -19,7 +19,7 @@ class IntroDetails extends StatelessWidget {
       return SizedBox(
           width: 600,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Stack(children: <Widget>[
