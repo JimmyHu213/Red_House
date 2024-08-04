@@ -79,6 +79,12 @@ class AboutContentMobile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       )),
+                  const Text(
+                    'Global Sexy Girl Service\nAge between 18 and 25\nLots of fun ❤️ ❤️ ❤️ ',
+                    style: TextStyle(
+                      color: primaryColor,
+                    ),
+                  ),
                   Row(
                     children: <Widget>[
                       IconButton(
@@ -111,9 +117,10 @@ class AboutContentMobile extends StatelessWidget {
                   ),
                   _buildAddressText(
                       '11 Packham St, Shepparton VIC', '0459635846', context),
-                  SizedBox(height: 10), // Add some space between addresses
                   _buildAddressText(
                       '83A Bridge Rd, Buronga NSW', '0499312283', context),
+                  _buildAddressText('3 Parkes way, Burnside Heights VIC',
+                      '0473311660', context)
                 ],
               )
             ],

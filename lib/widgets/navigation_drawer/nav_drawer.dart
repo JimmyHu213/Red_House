@@ -11,6 +11,7 @@ class NavDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: 300,
+        height: double.infinity,
         decoration: const BoxDecoration(
             color: Colors.white,
             boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 16)]),
@@ -52,7 +53,7 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 30, top: 60),
+        padding: const EdgeInsets.only(left: 30, top: 5),
         child: ListTile(
           title: Text(
             title,
