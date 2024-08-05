@@ -8,6 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then((value) => print("Initialized Firebase: $value"))
       .catchError((e) {
     return print("Error initializing Firebase: $e");
   });

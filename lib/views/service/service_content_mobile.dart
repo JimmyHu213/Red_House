@@ -14,6 +14,8 @@ class ServiceContentMobile extends StatelessWidget {
       final ListResult result =
           await FirebaseStorage.instance.ref('girls_images').listAll();
 
+      print('Number of items found: ${result.items.length}');
+
       for (final Reference ref in result.items) {
         final String downloadUrl = await ref.getDownloadURL();
         imageUrls.add(downloadUrl);
