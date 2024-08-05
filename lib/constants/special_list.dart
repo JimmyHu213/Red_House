@@ -1,0 +1,18 @@
+const List specialItems = [
+  'Aussie and Asian mixed Girl',
+  'Asian Girl',
+  'Euro Girl',
+  '100%Busty',
+  '100%Hottest',
+  '100%Real',
+  'Squrting',
+  'Blowjob',
+  'Cumshot',
+  'Passionate Deep Kissing',
+  'Shower together',
+  'Cuddinling and hugging',
+  'Erotic Body Massage',
+  'Unprotected oral and 69',
+  'sex multi positions',
+  'Threesome',
+];

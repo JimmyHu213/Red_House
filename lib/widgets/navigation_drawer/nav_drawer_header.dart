@@ -14,7 +14,7 @@ class NavDrawerHeader extends StatelessWidget {
         child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('Best Service in Town!',
+            Text('Best Service in VIC/NSW!',
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,

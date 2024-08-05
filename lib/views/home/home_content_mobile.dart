@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:red_house/constants/app_colors.dart';
 import 'package:red_house/widgets/call_to_action/call_to_action.dart';
 import 'package:red_house/widgets/intro_details/intro_details.dart';
 

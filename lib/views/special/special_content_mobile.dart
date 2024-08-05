@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:red_house/constants/app_colors.dart';
+import 'package:red_house/constants/special_list.dart';
 import 'package:red_house/widgets/title_text.dart';
 
 class SpecialContentMobile extends StatelessWidget {
@@ -8,7 +9,7 @@ class SpecialContentMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: (specialItems.length / 3).ceil() * 150,
+      height: (specialItems.length / 3).ceil() * 150 + 250,
       width: double.infinity,
       child: Column(
         children: [
@@ -53,18 +54,52 @@ class SpecialContentMobile extends StatelessWidget {
               },
             ),
           ),
+          const TitleTextWidget(title: '\$\$\$Price List\$\$\$'),
+          const Column(
+            children: [
+              Card(
+                color: secondaryColor,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'Asian girls full service price lists:\n20 mins: \$120\n30 mins: \$150\n60 mins: \$250',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: primaryColor),
+                  ),
+                ),
+              ),
+              Card(
+                color: secondaryColor,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'Aussie girls under 25yo price lists:\n15 mins: \$150\n20 mins: \$200\n30 mins: \$250\n60 mins: \$400',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: primaryColor),
+                  ),
+                ),
+              ),
+              Card(
+                color: secondaryColor,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'White girls over 25yo price lists:\n20 mins: \$150\n30 mins: \$200\n60 mins: \$350',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: primaryColor),
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 }
-
-List specialItems = [
-  'Aussie Girl',
-  'Asian Girl',
-  'Euro Girl',
-  'Squrting',
-  'Blowjob',
-  'Cumshot',
-  'Threesome',
-];
