@@ -1,7 +1,8 @@
 const List specialItems = [
-  'Aussie and Asian mixed Girl',
-  'Asian Girl',
-  'Euro Girl',
+  'Aussie Girls',
+  'Aussie and Asian mixed Girls',
+  'Asian Girls',
+  'Euro Girls',
   '100%Busty',
   '100%Hottest',
   '100%Real',

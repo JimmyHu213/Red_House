@@ -28,7 +28,7 @@ class HomeContentMobile extends StatelessWidget {
           ),
           CallToAction(title: 'Call Now'),
           Text(
-            'Best of Mildura/Shipparton/Melbourne Brothel \nCome and enjoy the best service in town.',
+            'Best Escort in Victoria\nCome and enjoy the very young sexy pretty girls with great service.',
             style: TextStyle(
                 fontSize: 16,
                 height: 1.7,
