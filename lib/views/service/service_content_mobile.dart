@@ -1,30 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:red_house/model/girl.dart';
-import 'package:red_house/widgets/pic_cell/girl_card.dart';
-import 'package:red_house/widgets/title_text.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:red_house/constants/app_colors.dart';
+import 'package:red_house/widgets/title_text.dart';
 
 class ServiceContentMobile extends StatelessWidget {
-  const ServiceContentMobile({super.key});
+  const ServiceContentMobile({Key? key}) : super(key: key);
 
-  Future<List<String>> getImageUrls() async {
-    List<String> imageUrls = [];
+  Future<Map<String, List<String>>> getGirlsImages() async {
+    Map<String, List<String>> girlsImages = {};
 
     try {
       final ListResult result =
           await FirebaseStorage.instance.ref('girls_images').listAll();
 
-      print('Number of items found: ${result.items.length}');
+      for (final Reference folder in result.prefixes) {
+        String girlName = folder.name;
+        List<String> imageUrls = [];
 
-      for (final Reference ref in result.items) {
-        final String downloadUrl = await ref.getDownloadURL();
-        imageUrls.add(downloadUrl);
+        final ListResult girlImages = await folder.listAll();
+        for (final Reference imageRef in girlImages.items) {
+          final String downloadUrl = await imageRef.getDownloadURL();
+          imageUrls.add(downloadUrl);
+        }
+
+        if (imageUrls.isNotEmpty) {
+          girlsImages[girlName] = imageUrls;
+        }
       }
     } catch (e) {
       print('Error fetching images: $e');
     }
 
-    return imageUrls;
+    return girlsImages;
+  }
+
+  void _showImageDialog(BuildContext context, List<String> images) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: images.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.network(
+                          images[index],
+                          fit: BoxFit.contain,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  child: Text('Close'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -32,11 +79,13 @@ class ServiceContentMobile extends StatelessWidget {
     return Column(
       children: [
         const TitleTextWidget(title: 'Our Babes'),
-        const SizedBox(
-          height: 20,
+        const Text(
+          '(OnTap to view more images)',
+          style: TextStyle(color: primaryColor, fontSize: 12),
         ),
-        FutureBuilder<List<String>>(
-          future: getImageUrls(),
+        const SizedBox(height: 20),
+        FutureBuilder<Map<String, List<String>>>(
+          future: getGirlsImages(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -45,113 +94,73 @@ class ServiceContentMobile extends StatelessWidget {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Text('No images found');
             } else {
+              List<MapEntry<String, List<String>>> girlEntries =
+                  snapshot.data!.entries.toList();
               return Container(
-                height: 600,
+                height: 700,
                 child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Number of columns
-                    childAspectRatio:
-                        1.5, // Adjust this value to change the aspect ratio of each item
-                    crossAxisSpacing: 10, // Horizontal space between items
-                    mainAxisSpacing: 10, // Vertical space between items
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.5,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
-                  itemCount: snapshot.data!.length,
+                  itemCount: girlEntries.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          snapshot.data![index],
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            print('Error loading image: $error');
-                            return Container(
-                              color: Colors.grey[300],
-                              child: Icon(Icons.error, color: Colors.red),
-                            );
-                          },
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                    String girlName = girlEntries[index].key;
+                    List<String> images = girlEntries[index].value;
+                    return GestureDetector(
+                      onTap: () => _showImageDialog(context, images),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.network(
+                                images.first,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error loading image: $error');
+                                  return Container(
+                                    color: Colors.grey[300],
+                                    child: Icon(Icons.error, color: Colors.red),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.5),
+                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  child: Text(
+                                    girlName,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
-                // child: ListView.builder(
-                //   scrollDirection: Axis.horizontal,
-                //   itemCount: snapshot.data!.length,
-                //   itemBuilder: (context, index) {
-                //     return Container(
-                //       margin: EdgeInsets.all(8), // Add some space between items
-                //       decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: Colors.grey, width: 2), // Add border
-                //         borderRadius:
-                //             BorderRadius.circular(12), // Rounded corners
-                //         boxShadow: [
-                //           BoxShadow(
-                //             color: Colors.black.withOpacity(0.1),
-                //             spreadRadius: 1,
-                //             blurRadius: 5,
-                //             offset: Offset(0, 3),
-                //           ),
-                //         ],
-                //       ),
-                //       child: ClipRRect(
-                //         borderRadius: BorderRadius.circular(
-                //             10), // Clip the image to match the border radius
-                //         child: Image.network(
-                //           snapshot.data![index],
-                //           fit: BoxFit.cover,
-                //           width: 300, // Set a fixed width for each image
-                //           errorBuilder: (context, error, stackTrace) {
-                //             print('Error loading image: ${error}');
-                //             return Container(
-                //               width: 300,
-                //               color: Colors.grey[300],
-                //               child: Icon(Icons.error, color: Colors.red),
-                //             );
-                //           },
-                //           loadingBuilder: (context, child, loadingProgress) {
-                //             if (loadingProgress == null) return child;
-                //             return Center(
-                //               child: CircularProgressIndicator(
-                //                 value: loadingProgress.expectedTotalBytes !=
-                //                         null
-                //                     ? loadingProgress.cumulativeBytesLoaded /
-                //                         loadingProgress.expectedTotalBytes!
-                //                     : null,
-                //               ),
-                //             );
-                //           },
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
               );
             }
           },
